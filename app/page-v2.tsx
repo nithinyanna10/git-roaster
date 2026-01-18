@@ -11,11 +11,11 @@ import { ReceiptsCaseFile } from "@/components/roaster-v2/ReceiptsCaseFile";
 import { ShareCardStudio } from "@/components/roaster-v2/ShareCardStudio";
 import { RoastLabPanel } from "@/components/roaster-v2/RoastLabPanel";
 
-export default function Home() {
+export default function HomeV2() {
   const [repoUrl, setRepoUrl] = useState("");
   const [mode, setMode] = useState<"roast" | "praise">("roast");
   const [useLLM, setUseLLM] = useState(false);
-  const [githubToken] = useState("");
+  const [githubToken, setGithubToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResult | null>(null);
