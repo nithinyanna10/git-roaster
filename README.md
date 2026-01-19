@@ -1,174 +1,57 @@
-# Git Roaster 🔥
+# Git Roaster v3
 
-**A playful, data-driven tool that analyzes GitHub repositories and generates roasts or praise based on actual metrics.**
+**Turn any repo into a story: vibe, health, drama, receipts.**
 
-Git Roaster takes a GitHub repository URL, analyzes its history and health (activity, churn, contributors, tests/CI, releases), and generates either a humorous "Roast" or supportive "Praise" - all grounded in real data with transparent "Receipts" showing exactly which metrics were used.
+A cinematic, founder-grade web app that analyzes GitHub repositories and produces interactive roasts, praise, audits, and investor snapshots with full evidence trails.
 
 ## ✨ Features
 
-- **🔍 Comprehensive Analysis**: Analyzes repository activity, bus factor, code churn, test coverage, releases, and documentation
-- **🔥 Roast Mode**: Playful, fact-based critiques that never invent facts or attack individuals
-- **✨ Praise Mode**: Supportive feedback highlighting what's going well
-- **📊 Scorecards**: Six badges (Pulse, Stability, Bus Factor, Tests, Releases, Docs) plus an overall Vibe Score
-- **📈 Visualizations**: Charts showing commit trends and code churn over time
-- **📋 Receipts**: Transparent evidence panel showing exactly which metrics support each claim
-- **🤖 Optional LLM Mode**: Uses local Ollama for more creative roasts (with template fallback)
-- **💾 Export & Share**: Copy share links, narrative text, or export full analysis as JSON
-- **⚡ Fast & Cached**: Results are cached for 1 hour to reduce API calls
+### 4 Analysis Modes
+- **🔥 Roast** - Playful, fact-based critiques
+- **✨ Praise** - Supportive, encouraging feedback
+- **🧾 Audit** - Comprehensive technical review
+- **📈 Investor** - Investment-grade snapshot
+
+### Signature Visualizations
+- **Repo MRI** - Interactive health scan with concentric rings
+- **Scrub-to-Replay** - Timeline replay with keyframes
+- **Bento Dashboard** - Modular metrics grid with 13+ tiles
+- **Momentum Strip** - Sparkline charts for stars, issues, PRs
+
+### Evidence System
+- **Receipts Room** - Every claim connected to real data
+- **Inline Citations** - Clickable [1][2][3] markers in narrative
+- **Confidence Scores** - Each metric shows confidence level
+- **Source Attribution** - GitHub API endpoints documented
+
+### Share & Export
+- **Poster Studio** - 5 templates (Minimal, Bold Neon, Investor Memo, Meme, Dark Glass)
+- **Download PNG** - High-quality share cards
+- **Copy to Clipboard** - One-click sharing
+- **Export JSON** - Full analysis data
+
+### Interactive Controls
+- **Cursor Modes**: Normal / Inspector / Arcade
+- **Sound Toggle** (default off)
+- **Reduce Motion** support
+- **Live GitHub Mode** (optional, with token)
+- **Keyboard Shortcuts** (1/2/3/4 for modes, I/A for cursor, R for remix, P for poster)
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js 18+ and npm
-- (Optional) Ollama installed locally if you want to use LLM mode
-
 ### Installation
-
-1. Clone or download this repository
-2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-3. (Optional) Create a `.env.local` file for configuration:
-
-```bash
-# Optional: GitHub Personal Access Token
-# Get one at: https://github.com/settings/tokens
-# Increases rate limits and allows access to private repos
-GITHUB_TOKEN=ghp_your_token_here
-
-# Optional: Ollama Configuration
-OLLAMA_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.2:1b
-```
-
-4. Run the development server:
+### Run Development Server
 
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## 📖 Usage
-
-1. **Enter a GitHub Repository URL**: Paste any public GitHub repository URL (e.g., `https://github.com/owner/repo`)
-2. **Choose Mode**: Toggle between "Roast" (playful critique) or "Praise" (supportive feedback)
-3. **Optional Settings**:
-   - Enable "Spicy AI (Ollama)" to use your local Ollama instance for more creative roasts
-   - Add a GitHub token for private repos or higher rate limits
-4. **Click "Roast it!"** and wait for the analysis
-5. **Explore Results**:
-   - Read the narrative (roast or praise)
-   - Check the scorecard badges
-   - View commit and churn trends
-   - Expand "Receipts" to see exact metrics used
-   - Share, copy, or export the analysis
-
-## 🏗️ Architecture
-
-### Tech Stack
-
-- **Frontend**: Next.js 16 (App Router) + TypeScript
-- **Styling**: TailwindCSS with dark theme
-- **Charts**: Recharts
-- **Caching**: LRU cache (in-memory)
-- **API**: GitHub REST API
-
-### Project Structure
-
-```
-git-roaster/
-├── app/
-│   ├── api/analyze/route.ts    # Analysis API endpoint
-│   ├── layout.tsx              # Root layout
-│   ├── page.tsx                # Main page
-│   └── globals.css             # Global styles
-├── components/
-│   ├── Charts.tsx              # Chart visualizations
-│   ├── Receipts.tsx           # Evidence panel
-│   └── ScoreBadge.tsx          # Score badge component
-├── lib/
-│   ├── github/
-│   │   └── client.ts           # GitHub API client
-│   ├── metrics/
-│   │   └── compute.ts          # Metrics computation & scoring
-│   ├── roast/
-│   │   ├── index.ts            # Narrative generation orchestrator
-│   │   ├── templates.ts        # Template-based roasts/praises
-│   │   └── ollama.ts           # Ollama LLM integration
-│   └── utils.ts                # Utility functions
-├── types/
-│   └── index.ts                # TypeScript type definitions
-└── tests/                      # Unit tests
-```
-
-## 📊 Metrics Computed
-
-### Pulse
-- Days since last commit
-- Commits in last 7/30/90 days
-- Commit trend (increasing/decreasing/stable)
-
-### Bus Factor
-- Percentage of commits by top contributor
-- Number of unique contributors in last 90 days
-
-### Churn
-- Total additions/deletions in last 90 days
-- Churn ratio (lines changed per commit)
-
-### Tests & CI
-- Presence of test directories
-- Presence of CI/CD workflows
-
-### Releases
-- Total release count
-- Days since last release
-- Release frequency (per month)
-
-### Documentation
-- README presence and length
-
-## 🎯 Scoring System
-
-Each repository receives six scores (0-100):
-
-1. **Pulse** (25% weight): Activity and recency
-2. **Stability** (20% weight): Code churn and stability
-3. **Bus Factor** (15% weight): Distribution of contributions
-4. **Tests** (15% weight): Test coverage and CI/CD
-5. **Releases** (15% weight): Release frequency and recency
-6. **Docs** (10% weight): Documentation quality
-
-The **Vibe Score** is a weighted average of all six scores.
-
-## 🔒 Safety & Ethics
-
-- **Fact-Based**: All roasts are grounded in actual repository metrics
-- **No Harassment**: Never attacks individuals or uses slurs
-- **Codebase Focus**: Critiques repository behavior (missing tests, inactivity), not people
-- **No Security Claims**: MVP avoids making security assessments
-- **Transparent**: Every claim shows its evidence in the Receipts panel
-
-## 🧪 Testing
-
-Run tests with:
-
-```bash
-npm test
-```
-
-Tests cover:
-- URL parsing and validation
-- Template selection logic
-- Claim-to-evidence mapping
-- Metrics computation
-
-## 🚢 Deployment
+Open [http://localhost:3000](http://localhost:3000)
 
 ### Build for Production
 
@@ -177,64 +60,212 @@ npm run build
 npm start
 ```
 
-### Environment Variables
+## 📊 How It Works
 
-Set these in your deployment environment:
+### Default: Mock Mode
+By default, Git Roaster uses **realistic mock data** so you can explore the UI immediately without API keys or rate limits.
 
-- `GITHUB_TOKEN` (optional): GitHub Personal Access Token
-- `OLLAMA_URL` (optional): Ollama API URL (default: `http://localhost:11434`)
-- `OLLAMA_MODEL` (optional): Ollama model name (default: `llama3.2:1b`)
+### Live GitHub Mode (Optional)
+1. Toggle "Live GitHub" in the hero section
+2. (Optional) Add a GitHub Personal Access Token for:
+   - Private repository access
+   - Higher rate limits (5,000/hour vs 60/hour)
+   - More accurate data
 
-### Rate Limits
+To get a token:
+1. Go to https://github.com/settings/tokens
+2. Generate new token (classic)
+3. Select `public_repo` scope (or `repo` for private)
+4. Paste token in the drawer
 
-- **Without token**: 60 requests/hour per IP
-- **With token**: 5,000 requests/hour
+### Analysis Process
+1. Enter GitHub repo URL (full URL or `owner/repo`)
+2. Select mode (Roast/Praise/Audit/Investor)
+3. Click "Ignite →"
+4. Watch the scan sequence
+5. Explore the reveal card, MRI, timeline, dashboard, and receipts
 
-If you hit rate limits, add a GitHub token in the UI or environment variables.
+## 🎨 UI Features
 
-## 🤝 Contributing
+### Scroll-Driven Chapters
+- **Hero/Ignition** - Input console with mode selection
+- **Scan Sequence** - Animated loading with progress
+- **Reveal Card** - Cinematic narrative with citations
+- **Repo MRI** - Interactive health visualization
+- **Scrub-to-Replay** - Timeline with keyframes
+- **Dashboard** - Bento grid with 13+ metric tiles
+- **Receipts** - Evidence room with claim-to-metric connections
 
-Contributions welcome! Areas for improvement:
+### Cosmic Background
+- Animated star field
+- Vibe-score reactive glow
+- GPU-optimized (CSS + light canvas)
+- Respects reduce motion
 
-- Additional metrics (code complexity, dependency health, etc.)
-- More template variations
-- Better error handling
-- Performance optimizations
-- UI/UX enhancements
+### Glassmorphism Design
+- Frosted glass cards
+- Soft blur effects
+- Subtle borders and glows
+- Premium feel
+
+## 📈 Metrics Computed
+
+### Core Metrics
+- **Pulse**: Activity and commit frequency
+- **Churn**: Code stability and change rate
+- **Bus Factor**: Contributor distribution
+- **Tests & CI**: Quality signals
+- **Releases**: Shipping cadence
+- **Docs**: Documentation quality
+
+### Advanced Metrics
+- **Issue Response Time**: Median hours to first response
+- **Issue Closure Rate**: Opened vs closed ratio
+- **PR Merge Rate**: Merge efficiency
+- **PR Cycle Time**: Time to merge
+- **Star Velocity**: Growth rate
+- **Contributor Velocity**: New contributors
+- **Risk Level**: Computed risk score
+- **Ops Health**: Healthy / At Risk / Unmaintained
+
+### Verdicts
+- **Ops Health**: Healthy / At Risk / Unmaintained
+- **Momentum**: Rising / Flat / Falling
+- **Risk Level**: Low / Medium / High
+- **Persona Badge**: Digital Fossil, CI Gremlin, Bus Factor Bomb, etc.
+
+## 🎯 Keyboard Shortcuts
+
+- `1` - Switch to Roast mode
+- `2` - Switch to Praise mode
+- `3` - Switch to Audit mode
+- `4` - Switch to Investor mode
+- `I` - Toggle Inspector cursor
+- `A` - Toggle Arcade cursor
+- `R` - Remix narrative
+- `P` - Open Poster Studio
+- `Esc` - Close modals
+
+## 🧾 Evidence & Citations
+
+Every claim in the narrative is backed by evidence:
+- Click citation markers `[1]` `[2]` to jump to evidence
+- Evidence cards show:
+  - Metric key and value
+  - Source (GitHub API endpoint)
+  - Confidence level (0-100%)
+  - Explanation
+- Claims highlight related dashboard tiles
+- Raw JSON available for power users
+
+## 🎴 Poster Studio
+
+Generate shareable cards with:
+- 5 template styles
+- Repo name and vibe score
+- Best roast/praise lines
+- Key receipts
+- Sticker badges
+- QR-like share element
+- Download PNG or copy to clipboard
+
+## 🔧 Technical Stack
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **TailwindCSS**
+- **Framer Motion** (animations)
+- **Recharts** (charts)
+- **Zustand** (state management)
+- **Zod** (validation)
+- **html-to-image** (poster generation)
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── analyze/route.ts    # Analysis endpoint
+│   │   └── poster/route.ts    # Poster endpoint (stub)
+│   ├── layout.tsx
+│   └── page.tsx                # Main page
+├── components/
+│   ├── BackgroundCosmos.tsx
+│   ├── HeroIgnition.tsx
+│   ├── ScanSequence.tsx
+│   ├── RevealCard.tsx
+│   ├── RepoMRI.tsx
+│   ├── ScrubToReplay.tsx
+│   ├── BentoDashboard.tsx
+│   ├── MomentumStrip.tsx
+│   ├── ReceiptsEvidenceRoom.tsx
+│   ├── PosterStudio.tsx
+│   ├── RightToolbar.tsx
+│   ├── CursorModes.tsx
+│   ├── Toasts.tsx
+│   ├── Modal.tsx
+│   ├── Card.tsx
+│   ├── Button.tsx
+│   ├── Badge.tsx
+│   └── Toggle.tsx
+├── lib/
+│   ├── mockAnalysis.ts         # Mock data generator
+│   ├── github.ts               # GitHub API client
+│   ├── scoring.ts              # Score computation
+│   ├── narrative.ts            # Narrative generation
+│   └── utils.ts                # Utilities
+├── store/
+│   └── useAppStore.ts          # Zustand store
+├── types/
+│   └── analysis.ts             # TypeScript types
+└── styles/
+    └── globals.css             # Global styles
+```
+
+## 🎨 Design Philosophy
+
+- **Cinematic**: Scroll-driven story chapters
+- **Transparent**: Every claim has receipts
+- **Interactive**: Hover, click, scrub, play
+- **Accessible**: Keyboard nav, reduce motion, contrast
+- **Performant**: Lightweight, GPU-friendly, cached
+
+## 🔒 Safety & Ethics
+
+- All roasts are **fact-based** (no invented metrics)
+- No personal attacks or harassment
+- Focuses on **codebase/process**, not individuals
+- Transparent evidence for every claim
+- No security claims in MVP
+
+## 🐛 Troubleshooting
+
+**Build Errors?**
+- Run `npm install` to ensure dependencies are installed
+- Check Node.js version (18+ required)
+
+**Rate Limit Errors?**
+- Add GitHub token in hero section
+- Or use mock mode (default)
+
+**Poster Generation Fails?**
+- Ensure browser supports Clipboard API
+- Try download instead of copy
 
 ## 📝 License
 
-MIT License - feel free to use this project for your own purposes.
+MIT License
 
 ## 🙏 Acknowledgments
 
 Built with:
-- [Next.js](https://nextjs.org/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [Recharts](https://recharts.org/)
-- [GitHub API](https://docs.github.com/en/rest)
-- [Ollama](https://ollama.ai/) (optional)
-
-## 📸 Screenshots
-
-_(Add screenshots of the app here)_
-
-## 🐛 Known Issues
-
-- Large repositories (>200 commits) may take longer to analyze
-- Private repositories require a GitHub token
-- Ollama integration requires local Ollama instance running
-
-## 🔮 Future Enhancements
-
-- [ ] "Roast intensity" slider (mild → savage, but still safe)
-- [ ] Compare two repositories side-by-side
-- [ ] Chrome extension overlay
-- [ ] More sophisticated metrics (code complexity, dependency health)
-- [ ] Historical analysis (how has the repo changed over time?)
-- [ ] Export to PDF
-- [ ] Social sharing with preview cards
+- Next.js
+- Framer Motion
+- Recharts
+- Zustand
+- GitHub API
 
 ---
 
-**Made with ❤️ and a healthy dose of humor**
+**Git Roaster v3** - Because every repo deserves a story with receipts. 🧾
