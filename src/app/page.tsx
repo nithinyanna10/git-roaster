@@ -16,15 +16,22 @@ import { PosterStudio } from "@/components/PosterStudio";
 import { RightToolbar } from "@/components/RightToolbar";
 import { CursorModes } from "@/components/CursorModes";
 import { Toasts } from "@/components/Toasts";
+import { ComparisonView } from "@/components/ComparisonView";
+import { LiveMonitoring } from "@/components/LiveMonitoring";
+import { AdvancedVisualizations } from "@/components/AdvancedVisualizations";
+import { AIPredictions } from "@/components/AIPredictions";
+import { HistoricalSnapshots } from "@/components/HistoricalSnapshots";
+import { PublicGallery } from "@/components/PublicGallery";
 import { remixNarrative } from "@/lib/narrative";
 
 export default function Home() {
-  const { mode, liveGithub, token } = useAppStore();
+  const { mode, liveGithub, token, theme, setTheme, comparingRepos, addComparingRepo } = useAppStore();
   const [repoUrl, setRepoUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [showPoster, setShowPoster] = useState(false);
+  const [comparisonAnalyses, setComparisonAnalyses] = useState<Analysis[]>([]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -59,8 +66,12 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const repoParam = params.get("repo");
+    const modeParam = params.get("mode") as typeof mode | null;
     if (repoParam) {
       setRepoUrl(repoParam.includes("/") ? `https://github.com/${repoParam}` : repoParam);
+    }
+    if (modeParam && ["roast", "praise", "audit", "investor"].includes(modeParam)) {
+      useAppStore.getState().setMode(modeParam);
     }
   }, []);
 
@@ -93,13 +104,82 @@ export default function Home() {
         throw new Error(data.error || "Failed to analyze repository");
       }
 
+      // This is the main analysis
       setAnalysis(data);
+      
+      // Add to history
+      const repoName = data.repo?.fullName || repoUrl;
+      useAppStore.getState().addToHistory({
+        repoUrl,
+        repoName,
+        timestamp: Date.now(),
+        mode,
+      });
+
+      // Update URL with shareable link
+      const url = new URL(window.location.href);
+      url.searchParams.set("repo", repoUrl);
+      url.searchParams.set("mode", mode);
+      window.history.pushState({}, "", url.toString());
+
+      // Check if this repo is in comparison queue and add it
+      if (comparingRepos.includes(repoUrl)) {
+        setComparisonAnalyses((prev) => {
+          const filtered = prev.filter((a) => a.repo.fullName !== data.repo.fullName);
+          return [...filtered, data];
+        });
+      }
     } catch (err: any) {
       setError(err.message || "An error occurred");
     } finally {
       setLoading(false);
     }
   };
+
+  // Load comparison analyses when comparingRepos changes
+  useEffect(() => {
+    const loadComparisons = async () => {
+      const reposToLoad = comparingRepos.filter(
+        (repoUrl) => !comparisonAnalyses.some((a) => {
+          const repoFullName = `https://github.com/${a.repo.fullName}`;
+          return repoFullName === repoUrl || a.repo.fullName === repoUrl;
+        })
+      );
+      
+      for (const repoUrl of reposToLoad) {
+        try {
+          const response = await fetch("/api/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              repo: repoUrl,
+              mode,
+              timeWindowDays: 90,
+              liveGithub,
+              token: token || undefined,
+            }),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            setComparisonAnalyses((prev) => {
+              const filtered = prev.filter((a) => a.repo.fullName !== data.repo.fullName);
+              return [...filtered, data];
+            });
+          }
+        } catch (err) {
+          console.error("Failed to load comparison:", err);
+        }
+      }
+    };
+
+    if (comparingRepos.length > 0) {
+      loadComparisons();
+    } else {
+      setComparisonAnalyses([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comparingRepos.join(","), mode, liveGithub, token]);
 
   const handleRemix = () => {
     if (!analysis) return;
@@ -113,6 +193,12 @@ export default function Home() {
     );
     setAnalysis({ ...analysis, narrative: remixed });
   };
+
+  // Apply theme
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return (
     <main className="relative min-h-screen">
@@ -188,7 +274,28 @@ export default function Home() {
               </div>
             </section>
             <ReceiptsEvidenceRoom analysis={analysis} />
+            
+            {/* Phase 2 Features */}
+            <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
+              <div className="max-w-7xl w-full space-y-8">
+                <LiveMonitoring analysis={analysis} repoUrl={repoUrl} />
+                <AdvancedVisualizations analysis={analysis} />
+                <AIPredictions analysis={analysis} />
+                <HistoricalSnapshots analysis={analysis} repoUrl={repoUrl} />
+              </div>
+            </section>
+            
+            <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
+              <div className="max-w-7xl w-full">
+                <PublicGallery />
+              </div>
+            </section>
           </>
+        )}
+
+        {/* Comparison View */}
+        {comparisonAnalyses.length > 0 && (
+          <ComparisonView analyses={comparisonAnalyses} />
         )}
       </div>
 
