@@ -7,8 +7,18 @@
   --foreground: #ededed;
 }
 
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+:root.light {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
@@ -31,6 +41,10 @@ body {
   z-index: 0;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
   overflow: hidden;
+}
+
+:root.light .cosmic-bg {
+  background: radial-gradient(ellipse at bottom, #e0e7ff 0%, #f8fafc 100%);
 }
 
 .cosmic-bg::before {
@@ -76,6 +90,11 @@ body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:root.light .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Grain overlay */
