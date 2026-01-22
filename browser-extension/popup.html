@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Roaster</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 16px;
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #ededed;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .input-group {
+      margin-bottom: 12px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #3f3f46;
+      border-radius: 6px;
+      background: #18181b;
+      color: #ededed;
+      box-sizing: border-box;
+    }
+    .mode-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button {
+      padding: 8px 12px;
+      border: 1px solid #3f3f46;
+      border-radius: 6px;
+      background: #18181b;
+      color: #ededed;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #27272a;
+      border-color: #8b5cf6;
+    }
+    button.active {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+    }
+    .analyze-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .analyze-btn:hover {
+      opacity: 0.9;
+    }
+    .analyze-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .status.loading {
+      background: #1e3a5f;
+      color: #60a5fa;
+    }
+    .status.success {
+      background: #1e3a5f;
+      color: #4ade80;
+    }
+    .status.error {
+      background: #7f1d1d;
+      color: #f87171;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔥 Git Roaster</h1>
+  </div>
+  
+  <div class="input-group">
+    <input type="text" id="repoInput" placeholder="owner/repo or full URL">
+  </div>
+  
+  <div class="mode-buttons">
+    <button data-mode="roast" class="active">🔥 Roast</button>
+    <button data-mode="praise">✨ Praise</button>
+    <button data-mode="audit">🧾 Audit</button>
+    <button data-mode="investor">📈 Investor</button>
+  </div>
+  
+  <button class="analyze-btn" id="analyzeBtn">Analyze →</button>
+  
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

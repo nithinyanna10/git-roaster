@@ -1,0 +1,8 @@
+#git-roaster-btn {
+  transition: opacity 0.2s;
+}
+
+#git-roaster-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
