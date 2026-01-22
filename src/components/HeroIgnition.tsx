@@ -24,8 +24,10 @@ interface HeroIgnitionProps {
 }
 
 export function HeroIgnition({ repoUrl, setRepoUrl, onAnalyze, loading }: HeroIgnitionProps) {
-  const { mode, setMode, liveGithub, setLiveGithub, token, setToken } = useAppStore();
+  const { mode, setMode, liveGithub, setLiveGithub, token, setToken, bookmarkedRepos, history, removeBookmark } = useAppStore();
   const [showTokenDrawer, setShowTokenDrawer] = useState(false);
+  const [showBookmarks, setShowBookmarks] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const [currentInsight, setCurrentInsight] = useState(0);
   const [parsed, setParsed] = useState<{ owner: string; repo: string } | null>(null);
 
@@ -103,20 +105,92 @@ export function HeroIgnition({ repoUrl, setRepoUrl, onAnalyze, loading }: HeroIg
             <span className="text-xs text-zinc-400 font-mono">git-roaster v3.0</span>
           </div>
 
-          {/* Input */}
+          {/* Input with History/Bookmarks */}
           <div className="mb-4">
-            <input
-              type="text"
-              value={repoUrl}
-              onChange={(e) => setRepoUrl(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !loading && onAnalyze()}
-              placeholder="https://github.com/owner/repo or owner/repo"
-              className="w-full px-4 py-3 rounded-lg bg-zinc-950/50 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-sm"
-            />
+            <div className="flex gap-2 mb-2">
+              <input
+                type="text"
+                value={repoUrl}
+                onChange={(e) => setRepoUrl(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && !loading && onAnalyze()}
+                placeholder="https://github.com/owner/repo or owner/repo"
+                className="flex-1 px-4 py-3 rounded-lg bg-zinc-950/50 border border-zinc-700 text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono text-sm"
+              />
+              <button
+                onClick={() => setShowHistory(!showHistory)}
+                className="px-3 py-3 rounded-lg glass border border-white/10 text-zinc-300 hover:bg-white/5"
+                title="History"
+              >
+                📜
+              </button>
+              <button
+                onClick={() => setShowBookmarks(!showBookmarks)}
+                className="px-3 py-3 rounded-lg glass border border-white/10 text-zinc-300 hover:bg-white/5"
+                title="Bookmarks"
+              >
+                ⭐
+              </button>
+            </div>
             {parsed && (
               <div className="mt-2 text-xs text-green-400 font-mono">
                 ✓ {parsed.owner} / {parsed.repo}
               </div>
+            )}
+            
+            {/* History Dropdown */}
+            {showHistory && history.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-2 glass rounded-lg p-2 max-h-48 overflow-y-auto"
+              >
+                {history.slice(0, 10).map((entry) => (
+                  <button
+                    key={entry.timestamp}
+                    onClick={() => {
+                      setRepoUrl(entry.repoUrl);
+                      setMode(entry.mode);
+                      setShowHistory(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded hover:bg-white/5 text-sm text-zinc-300 flex justify-between items-center"
+                  >
+                    <span className="truncate">{entry.repoName}</span>
+                    <span className="text-xs text-zinc-500 ml-2">{new Date(entry.timestamp).toLocaleDateString()}</span>
+                  </button>
+                ))}
+              </motion.div>
+            )}
+
+            {/* Bookmarks Dropdown */}
+            {showBookmarks && bookmarkedRepos.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-2 glass rounded-lg p-2 max-h-48 overflow-y-auto"
+              >
+                {bookmarkedRepos.map((bookmark) => (
+                  <div
+                    key={bookmark.repoUrl}
+                    className="flex items-center justify-between px-3 py-2 rounded hover:bg-white/5 group"
+                  >
+                    <button
+                      onClick={() => {
+                        setRepoUrl(bookmark.repoUrl);
+                        setShowBookmarks(false);
+                      }}
+                      className="flex-1 text-left text-sm text-zinc-300 truncate"
+                    >
+                      {bookmark.repoName}
+                    </button>
+                    <button
+                      onClick={() => removeBookmark(bookmark.repoUrl)}
+                      className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 ml-2"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </motion.div>
             )}
           </div>
 

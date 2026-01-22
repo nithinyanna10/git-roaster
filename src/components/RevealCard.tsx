@@ -8,6 +8,7 @@ import { Card } from "./Card";
 import { Button } from "./Button";
 import { Badge } from "./Badge";
 import { showToast } from "./Toasts";
+import { ExportMenu } from "./ExportMenu";
 import { remixNarrative } from "@/lib/narrative";
 
 interface RevealCardProps {
@@ -140,24 +141,64 @@ export function RevealCard({ analysis, onRemix, onGeneratePoster }: RevealCardPr
             <Button onClick={onGeneratePoster} variant="primary" size="sm">
               🎴 Generate Poster
             </Button>
+            <Button
+              onClick={() => {
+                const { addBookmark, bookmarkedRepos } = useAppStore.getState();
+                const repoUrl = `https://github.com/${analysis.repo.fullName}`;
+                const isBookmarked = bookmarkedRepos.some(b => b.repoUrl === repoUrl || b.repoUrl === analysis.repo.fullName);
+                if (isBookmarked) {
+                  showToast("Already bookmarked!");
+                } else {
+                  addBookmark({
+                    repoUrl,
+                    repoName: analysis.repo.fullName,
+                    timestamp: Date.now(),
+                    analysis,
+                  });
+                  showToast("Bookmarked!");
+                }
+              }}
+              variant="secondary"
+              size="sm"
+            >
+              ⭐ Bookmark
+            </Button>
+            <Button
+              onClick={() => {
+                const { addComparingRepo, comparingRepos } = useAppStore.getState();
+                const repoUrl = `https://github.com/${analysis.repo.fullName}`;
+                if (comparingRepos.includes(repoUrl) || comparingRepos.includes(analysis.repo.fullName)) {
+                  showToast("Already in comparison!");
+                } else if (comparingRepos.length >= 4) {
+                  showToast("Max 4 repos for comparison!");
+                } else {
+                  addComparingRepo(repoUrl);
+                  showToast("Added to comparison! Analyze more repos to compare.");
+                }
+              }}
+              variant="secondary"
+              size="sm"
+            >
+              🔀 Compare
+            </Button>
+            <Button
+              onClick={() => {
+                const url = new URL(window.location.href);
+                url.searchParams.set("repo", analysis.repo.fullName);
+                url.searchParams.set("mode", mode);
+                navigator.clipboard.writeText(url.toString());
+                showToast("Share link copied!");
+              }}
+              variant="secondary"
+              size="sm"
+            >
+              🔗 Share
+            </Button>
+            <ExportMenu analysis={analysis} mode={mode} />
             {mode === "investor" && (
-              <>
-                <Button onClick={handleCopy} variant="secondary" size="sm">
-                  📄 Copy Memo
-                </Button>
-                <Button onClick={() => {
-                  const json = JSON.stringify(analysis, null, 2);
-                  const blob = new Blob([json], { type: "application/json" });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url;
-                  a.download = `${analysis.repo.fullName}-analysis.json`;
-                  a.click();
-                  showToast("JSON exported!");
-                }} variant="secondary" size="sm">
-                  💾 Export JSON
-                </Button>
-              </>
+              <Button onClick={handleCopy} variant="secondary" size="sm">
+                📄 Copy Memo
+              </Button>
             )}
           </div>
         </Card>
