@@ -7,6 +7,7 @@ import { BackgroundCosmos } from "@/components/BackgroundCosmos";
 import { HeroIgnition } from "@/components/HeroIgnition";
 import { ScanSequence } from "@/components/ScanSequence";
 import { RevealCard } from "@/components/RevealCard";
+import { Button } from "@/components/Button";
 import { RepoMRI } from "@/components/RepoMRI";
 import { ScrubToReplay } from "@/components/ScrubToReplay";
 import { BentoDashboard } from "@/components/BentoDashboard";
@@ -22,6 +23,13 @@ import { AdvancedVisualizations } from "@/components/AdvancedVisualizations";
 import { AIPredictions } from "@/components/AIPredictions";
 import { HistoricalSnapshots } from "@/components/HistoricalSnapshots";
 import { PublicGallery } from "@/components/PublicGallery";
+import { CinematicMode } from "@/components/CinematicMode";
+import { StoryMode } from "@/components/StoryMode";
+import { RepoGalaxy3D } from "@/components/RepoGalaxy3D";
+import { CodeQualityDeepDive } from "@/components/CodeQualityDeepDive";
+import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { FunModes } from "@/components/FunModes";
+import { ThemeBuilder } from "@/components/ThemeBuilder";
 import { remixNarrative } from "@/lib/narrative";
 
 export default function Home() {
@@ -32,6 +40,7 @@ export default function Home() {
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [showPoster, setShowPoster] = useState(false);
   const [comparisonAnalyses, setComparisonAnalyses] = useState<Analysis[]>([]);
+  const [showCinematic, setShowCinematic] = useState(false);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -286,11 +295,36 @@ export default function Home() {
             </section>
             
             <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
-              <div className="max-w-7xl w-full">
+              <div className="max-w-7xl w-full space-y-8">
                 <PublicGallery />
+                <div className="flex gap-4">
+                  <Button
+                    onClick={() => setShowCinematic(true)}
+                    variant="primary"
+                    size="lg"
+                    className="flex-1"
+                  >
+                    🎬 Cinematic Mode
+                  </Button>
+                </div>
+                <StoryMode analysis={analysis} />
+                <RepoGalaxy3D analysis={analysis} />
+                <CodeQualityDeepDive analysis={analysis} />
+                <SentimentAnalysis analysis={analysis} />
+                <FunModes analysis={analysis} />
+                <ThemeBuilder />
               </div>
             </section>
           </>
+        )}
+
+        {/* Cinematic Mode Overlay */}
+        {analysis && (
+          <CinematicMode
+            analysis={analysis}
+            isActive={showCinematic}
+            onExit={() => setShowCinematic(false)}
+          />
         )}
 
         {/* Comparison View */}
