@@ -30,6 +30,14 @@ import { CodeQualityDeepDive } from "@/components/CodeQualityDeepDive";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import { FunModes } from "@/components/FunModes";
 import { ThemeBuilder } from "@/components/ThemeBuilder";
+import { TimeMachine } from "@/components/TimeMachine";
+import { AskYourRepo } from "@/components/AskYourRepo";
+import { RepoBattleArena } from "@/components/RepoBattleArena";
+import { MultiLLMSupport } from "@/components/MultiLLMSupport";
+import { CodeReviewAI } from "@/components/CodeReviewAI";
+import { OrganizationDashboard } from "@/components/OrganizationDashboard";
+import { GestureControls } from "@/components/GestureControls";
+import { PWASetup } from "@/components/PWASetup";
 import { remixNarrative } from "@/lib/narrative";
 
 export default function Home() {
@@ -313,6 +321,14 @@ export default function Home() {
                 <SentimentAnalysis analysis={analysis} />
                 <FunModes analysis={analysis} />
                 <ThemeBuilder />
+                <TimeMachine analysis={analysis} repoUrl={repoUrl} />
+                <AskYourRepo analysis={analysis} />
+                <RepoBattleArena />
+                <MultiLLMSupport />
+                <CodeReviewAI analysis={analysis} />
+                <OrganizationDashboard />
+                <GestureControls />
+                <PWASetup />
               </div>
             </section>
           </>

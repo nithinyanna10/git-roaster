@@ -34,10 +34,7 @@ export interface Commit {
   stats?: {
     additions: number;
     deletions: number;
-    total: number;
-  };
-  files?: string[];
-}
+    total: number; }; files?: string[]; }
 
 export interface Metrics {
   // Pulse
