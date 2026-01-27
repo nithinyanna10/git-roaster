@@ -48,6 +48,20 @@ import { InnovationIndex } from "@/components/InnovationIndex";
 import { ForkAnalysis } from "@/components/ForkAnalysis";
 import { MigrationDetection } from "@/components/MigrationDetection";
 import { PowerPointExport } from "@/components/PowerPointExport";
+import { PushNotifications } from "@/components/PushNotifications";
+import { ComicStripMode } from "@/components/ComicStripMode";
+import { MusicalMode } from "@/components/MusicalMode";
+import { ArtGenerator } from "@/components/ArtGenerator";
+import { RepoPersonalityTest } from "@/components/RepoPersonalityTest";
+import { AIRepoTherapist } from "@/components/AIRepoTherapist";
+import { CostAnalysis } from "@/components/CostAnalysis";
+import { RiskAssessment } from "@/components/RiskAssessment";
+import { ComplianceChecking } from "@/components/ComplianceChecking";
+import { CICDIntegration } from "@/components/CICDIntegration";
+import { RoastOfTheDay } from "@/components/RoastOfTheDay";
+import { WeeklyChallenges } from "@/components/WeeklyChallenges";
+import { TutorialMode } from "@/components/TutorialMode";
+import { MultiRepoPortfolio } from "@/components/MultiRepoPortfolio";
 import { remixNarrative } from "@/lib/narrative";
 
 export default function Home() {
@@ -306,15 +320,24 @@ export default function Home() {
             <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
               <div className="max-w-7xl w-full space-y-8">
                 <LiveMonitoring analysis={analysis} repoUrl={repoUrl} />
+                <PushNotifications analysis={analysis} />
                 <ContinuousAnalysis analysis={analysis} repoUrl={repoUrl} />
                 <AdvancedVisualizations analysis={analysis} />
                 <AIPredictions analysis={analysis} />
                 <HistoricalSnapshots analysis={analysis} repoUrl={repoUrl} />
+                <CICDIntegration analysis={analysis} repoUrl={repoUrl} />
+                <CostAnalysis analysis={analysis} />
+                <RiskAssessment analysis={analysis} />
+                <ComplianceChecking analysis={analysis} />
               </div>
             </section>
             
             <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
               <div className="max-w-7xl w-full space-y-8">
+                <TutorialMode />
+                <RoastOfTheDay />
+                <WeeklyChallenges />
+                <MultiRepoPortfolio />
                 <PublicGallery />
                 <div className="flex gap-4">
                   <Button
@@ -335,6 +358,11 @@ export default function Home() {
                 <PodcastMode analysis={analysis} />
                 <VideoExport analysis={analysis} />
                 <FunModes analysis={analysis} />
+                <ComicStripMode analysis={analysis} />
+                <MusicalMode analysis={analysis} />
+                <ArtGenerator analysis={analysis} />
+                <RepoPersonalityTest analysis={analysis} />
+                <AIRepoTherapist analysis={analysis} />
                 <ThemeBuilder />
                 <TimeMachine analysis={analysis} repoUrl={repoUrl} />
                 <ForkAnalysis analysis={analysis} repoUrl={repoUrl} />
