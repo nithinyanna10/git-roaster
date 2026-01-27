@@ -38,6 +38,16 @@ import { CodeReviewAI } from "@/components/CodeReviewAI";
 import { OrganizationDashboard } from "@/components/OrganizationDashboard";
 import { GestureControls } from "@/components/GestureControls";
 import { PWASetup } from "@/components/PWASetup";
+import { ContinuousAnalysis } from "@/components/ContinuousAnalysis";
+import { PodcastMode } from "@/components/PodcastMode";
+import { VideoExport } from "@/components/VideoExport";
+import { SecurityScanner } from "@/components/SecurityScanner";
+import { PerformanceBottleneckFinder } from "@/components/PerformanceBottleneckFinder";
+import { KnowledgeGraph } from "@/components/KnowledgeGraph";
+import { InnovationIndex } from "@/components/InnovationIndex";
+import { ForkAnalysis } from "@/components/ForkAnalysis";
+import { MigrationDetection } from "@/components/MigrationDetection";
+import { PowerPointExport } from "@/components/PowerPointExport";
 import { remixNarrative } from "@/lib/narrative";
 
 export default function Home() {
@@ -296,6 +306,7 @@ export default function Home() {
             <section className="min-h-screen flex items-center justify-center px-4 snap-start relative z-10 py-20">
               <div className="max-w-7xl w-full space-y-8">
                 <LiveMonitoring analysis={analysis} repoUrl={repoUrl} />
+                <ContinuousAnalysis analysis={analysis} repoUrl={repoUrl} />
                 <AdvancedVisualizations analysis={analysis} />
                 <AIPredictions analysis={analysis} />
                 <HistoricalSnapshots analysis={analysis} repoUrl={repoUrl} />
@@ -318,10 +329,19 @@ export default function Home() {
                 <StoryMode analysis={analysis} />
                 <RepoGalaxy3D analysis={analysis} />
                 <CodeQualityDeepDive analysis={analysis} />
+                <SecurityScanner analysis={analysis} repoUrl={repoUrl} />
+                <PerformanceBottleneckFinder analysis={analysis} repoUrl={repoUrl} />
                 <SentimentAnalysis analysis={analysis} />
+                <PodcastMode analysis={analysis} />
+                <VideoExport analysis={analysis} />
                 <FunModes analysis={analysis} />
                 <ThemeBuilder />
                 <TimeMachine analysis={analysis} repoUrl={repoUrl} />
+                <ForkAnalysis analysis={analysis} repoUrl={repoUrl} />
+                <MigrationDetection analysis={analysis} repoUrl={repoUrl} />
+                <PowerPointExport analysis={analysis} />
+                <KnowledgeGraph analysis={analysis} />
+                <InnovationIndex analysis={analysis} />
                 <AskYourRepo analysis={analysis} />
                 <RepoBattleArena />
                 <MultiLLMSupport />
